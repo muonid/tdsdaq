@@ -1,0 +1,51 @@
+#-----------------------------------------------------------
+# Vivado v2014.2 (64-bit)
+# SW Build 932637 on Wed Jun 11 13:08:52 MDT 2014
+# IP Build 924643 on Fri May 30 09:20:16 MDT 2014
+# Start of session at: Wed Aug 31 12:59:01 2016
+# Process ID: 30524
+# Log file: /home/tdsdaq01/lianglocal/fpgaMgr/./xtcl_backlog/checkhere.log
+# Journal file: 
+#-----------------------------------------------------------
+catch {source jtagutils.tcl -notrace}
+0
+setup_hardware_server
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-2222] Launching hw_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+****** Xilinx hw_server v2014.2
+  **** Build date : Jun 11 2014-13:08:17
+    ** Copyright 1986-1999, 2001-2014 Xilinx, Inc. All Rights Reserved.
+
+INFO: hw_server application started
+INFO: Use Ctrl-C to exit hw_server application
+
+
+INFO: [Labtools 27-2286] Connecting to vcse_server host localhost port 60001
+INFO: [Labtools 27-109] Started Vivado Cse Server instance on port: 60001
+INFO: [Labtools 27-2286] Connecting to vcse_server host localhost port 60001
+INFO: [Labtools 27-147] vcse_server: TCF plugin connecting to hw_server...
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection established with hw_server.
+INFO: [Labtools 27-147] vcse_server: TCF plugin connecting to hw_server...
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection established with hw_server.
+INFO: [Labtools 27-147] vcse_server: TCF plugin connecting to hw_server...
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection established with hw_server.
+CONNECT_HW_SERVER_OK
+0
+deploy_bitstream localhost/xilinx_tcf/Xilinx/000013c0dac501 ./bitfiles/tdsv1_bert.bit ./bitfiles/tdsv1_bert_debugnets.ltx
+INFO: [jtagutils.tcl] Found Bitstream file: ./bitfiles/tdsv1_bert.bit
+INFO: [jtagutils.tcl] Found Probe file: ./bitfiles/tdsv1_bert_debugnets.ltx
+INFO: [Labtools 27-147] vcse_server: TCF plugin connecting to hw_server...
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection established with hw_server.
+INFO: [Labtools 27-1435] Device xc7a200t (JTAG device index = 0) is not programmed (DONE status = 0).
+INFO: [Labtools 27-2154] Reading 9730751 bytes from file ./bitfiles/tdsv1_bert.bit...
+INFO: [Labtools 27-32] Done pin status: HIGH
+program_hw_devices: Time (s): cpu = 00:00:01 ; elapsed = 00:00:34 . Memory (MB): peak = 1012.066 ; gain = 141.617
+INFO: [Labtools 27-1432] Device xc7a200t (JTAG device index = 0) is programmed with a design that has 1 ILA core(s) in it.
+DEPLOY_BITSTREAM_OK
+0
+eye_scan
+WARNING: [Labtoolstcl 44-158] No matching hw_sio_links were found.
+ERROR: [Common 17-55] 'set_property' expects at least one object.
+ERROR: [Labtools 27-1348] vcse_server socket connection: hw_server has shut down, (socket read failed). Error: 32
