@@ -1,4 +1,6 @@
 # tdsdaq
+31 Aug 2016 Updated
+
 
 This repositary contains python and tcl subroutings to control FPGA and power supply etc. for automating bench test and qualifications of thousands of TDS chips.
 
