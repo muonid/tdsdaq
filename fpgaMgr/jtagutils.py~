@@ -1,0 +1,254 @@
+#!/usr/bin/env python
+
+# ==========================================================
+# jtagutils.py
+# ver 1.0
+# Liang Guan
+# August 2016
+# 
+# 
+# A python wrapper to invoke tcl commands in 
+# Xilinx tcl shell. Do not confuse with 
+# jtagutils.tcl
+#
+# -- Note:
+# 1. several global varivables are defined to monitor 
+#    xilinx shell aliveness 
+# 2. always connect to hw_server when xilinx shell is
+#    open. Always close hw_server when subprcoess is 
+#    closed
+# 3. AVOID multi-threading this module. 
+#
+# -- Prerequisites
+# pexpect,psutils
+#
+# ==========================================================
+
+from __future__ import absolute_import
+from __future__ import unicode_literals
+import pexpect
+import psutil
+from termcolor import bcolors
+
+bkgColor = bcolors
+
+#default 
+pid_jtag_proc = -1 # Default: Not exsit
+
+
+class JtagUtils():
+
+	def __init__(self,motherboardid,tdsprogramid,runmode="new"):
+
+		global pid_jtag_proc  # pexpect subprocess pid, Not vivado pid 
+
+		# place holder: look up dictionary here 
+		#   motherboardid -->  jtag_target_descriptor, fpga id
+		#   tdsprogramid -->  bitstream location 
+		self.PROGID = "TDS-TEST-PROG-001"
+		self.BITFILE = './virtex7_ibert/example_ibert_7series_gtx_0.bit' 
+		self.PROBFILE = 'NA'
+		self.JTAGDES = 'localhost/xilinx_tcf/Digilent/210203A0237EA'
+
+
+		# Creat new vivado subprocess or check  
+		if (runmode == "new"):
+			# -- open xilinx tcl shell
+			self.PVIVADO = pexpect.spawn('vivado -mode tcl -nojou')
+			pid_jtag_proc = self.PVIVADO.pid
+			print "INFO: [jtagutils.py] new vivado process. Pid: ",pid_jtag_proc
+
+			# -- load jtagutils.tcl 
+			self.PVIVADO.sendline('catch {source jtagutils.tcl -notrace}')
+			isload_jtagutils = self.PVIVADO.expect('0',timeout=5)
+			if isload_jtagutils==0:
+				print bkgColor.OKGREEN + "INFO: [jtagutils.py] jtagutils.tcl loaded to xtclsh." + bkgColor.ENDC
+			else:
+				print bkgColor.FAIL + "ERROR: [jtagutils.py] can not load jtagutils.tcl" + bkgColor.ENDC
+
+		elif (runmode == "resume"):
+			if (psutil.pid_exists(pid_jtag_proc) == True):
+				print "INFO: [jtagutils.py] Vivado shell already openned. Pid: ",pid_jtag_proc
+			else:
+				print "INFO: [jtagutils.py] No Vivado shell running."
+		else:
+			print "ERROR: [jtagutils.py] Unrecognized run mode."
+
+
+	def setup_hardware_server(self):
+		if (psutil.pid_exists(pid_jtag_proc) == True):
+			print "setup_hardware_server: pid ", pid_jtag_proc, "is still alive..."
+			self.PVIVADO.sendline('setup_hardware_server')
+			ret_connect_server = self.PVIVADO.expect(['CONNECT_HW_SERVER_OK',
+								'Common 17-39',
+								pexpect.EOF,
+								pexpect.TIMEOUT],
+								timeout=10)
+
+			if (ret_connect_server == 0):
+				print "self.PVIVADO.before:",self.PVIVADO.before
+				print "self.PVIVADO.after:",self.PVIVADO.after
+				print bkgColor.OKGREEN + "INFO: [jtagutils.py] Connect to hardware server - SUCCEEDED!" + bkgColor.ENDC
+				#self.PVIVADO.interact()
+				return True
+			elif (ret_connect_server == 1):
+				print "self.PVIVADO.after:",self.PVIVADO.after
+				print bkgColor.FAIL + "INFO: [jtagutils.py] Connect to hardware server - FAILED (LabTools 27-147)!" + bkgColor.ENDC
+				return False
+			elif (ret_connect_server == 2):
+				print "WARNNING: [jtagutils.py] EOF Found!"
+				return False
+			elif (ret_connect_server == 3):
+				print "self.PVIVADO.after:",self.PVIVADO.after
+				print bkgColor.FAIL + "ERROR: [jtagutils.py] Time out!!" + bkgColor.ENDC
+				return False
+			else:
+				print "WARNING: [jtagutils.py] Unable to determine hardware server status"
+				return False
+
+		else:
+			print "INFO: [jtagutils.py] Vivado process already losed. Do nothing."
+			return False
+
+	def deploy_bitstream(self): #automatically open jtag target before deploying bitstream
+
+		if (psutil.pid_exists(pid_jtag_proc) == True):
+			print "deploy_bitstream: pid ", pid_jtag_proc, "is still alive..."
+			cmd = 'deploy_bitstream localhost/xilinx_tcf/Digilent/210203A0237EA ./virtex7_ibert/example_ibert_7series_gtx_0.bit NA' 
+			self.PVIVADO.sendline(cmd)
+			ret_deploy_bit = self.PVIVADO.expect(['DEPLOY_BITSTREAM_OK',
+								'DEPLOY_BITSTREAM_FAIL',
+								'OPEN_HW_TARGET_FAIL',
+								pexpect.EOF,
+								pexpect.TIMEOUT],
+								timeout=120)
+			if (ret_deploy_bit == 0):
+				print "self.PVIVADO.after:",self.PVIVADO.after
+				print bkgColor.OKGREEN + "INFO: [jtagutils.py] Deploying bit stream for",self.PROGID,"- SUCCEEDED!" + bkgColor.ENDC
+				return True
+			elif (ret_deploy_bit == 1):
+				print bkgColor.FAIL + "ERROR: [jtagutils.py] Deploying bit stream for",self.PROGID,"- FAILED!" + bkgColor.ENDC
+				print self.PVIVADO.before
+				return False
+			elif (ret_deploy_bit == 2):
+				print bkgColor.FAIL + "ERROR: [jtagutils.py] Unable to open hardware. Jtag target ID:",self.JTAGDES + bkgColor.ENDC
+				print self.PVIVADO.before
+				return False
+			elif (ret_deploy_bit == 3):
+				print "WARNNING: [jtagutils.py] EOF Found!"
+				return False
+			elif (ret_deploy_bit == 4):
+				print "ERROR: [jtagutils.py] Deploying bit stream - Time out!!"
+				return False
+			else:
+				print "WARNING: [jtagutils.py] Unable to determine bitstream delpoyment status"
+				return False
+
+		else:
+			print "INFO: [jtagutils.py] Vivado process already losed. Do nothing."
+			return True
+	
+
+	def eye_scan(self):
+		if (psutil.pid_exists(pid_jtag_proc) == True):
+			print "eye_scan: pid ", pid_jtag_proc, "is still alive..."
+			self.PVIVADO.sendline('eye_scan')
+			ret_eyescan = self.PVIVADO.expect(['EYE_SCAN_DONE',
+								'No Links Found',
+								pexpect.EOF,
+								pexpect.TIMEOUT],
+								timeout=1000)
+
+			if (ret_eyescan == 0):
+				print bkgColor.OKGREEN + "INFO: [jtagutils.py] Eye Scan","- SUCCEEDED!" + bkgColor.ENDC
+				return True
+			elif (ret_eyescan == 1):
+				print bkgColor.FAIL + "INFO: [jtagutils.py] Eye Scan","- FAILED! (No links found)" + bkgColor.ENDC
+				return False
+			elif (ret_eyescan == 2):
+				print bkgColor.FAIL + "INFO: [jtagutils.py] Eye Scan - EOF Found!!" + bkgColor.ENDC
+				return False
+			elif (ret_eyescan == 3):
+				print bkgColor.FAIL + "INFO: [jtagutils.py] Eye Scan - Timeout!!", + bkgColor.ENDC
+				return False
+			else:
+				print "WARNING: [jtagutils.py] Unable to determine eye scan status and results"
+				return False
+
+		else:
+			print "INFO: [jtagutils.py] Vivado process already losed. Do nothing."
+			return False
+
+	def close_jtag_target(self):None
+
+	
+	def close_all(self): #  Close hardware_server, vivado shell, pexpect subprocess
+		
+		if (psutil.pid_exists(pid_jtag_proc) == True):
+			print "close_all: pid ", pid_jtag_proc, "is still alive..."
+			self.PVIVADO.sendline('close_hardware_server')
+			ret_close_hw = self.PVIVADO.expect(['DISCONNECT_HW_SERVER_OK',
+							'DISCONNECT_HW_SERVER_FAIL',
+							pexpect.EOF,
+							pexpect.TIMEOUT])
+			if (ret_close_hw == 0):
+				print "self.PVIVADO.after:",self.PVIVADO.after
+				print bkgColor.OKGREEN + "INFO: [jtagutils.py] Disconnect hardware server - SUCCEEDED!" + bkgColor.ENDC
+				return True
+			#if (ret_close_hw == 1):
+			#	print "self.PVIVADO.after:",self.PVIVADO.after
+			#	print "INFO: [jtagutils.py] vcse_server crashed and used by other client. Need reboot!"
+			#	return True
+			elif (ret_close_hw == 1):
+				print "ERROR: [jtagutils.py] Disconnect hardware server - FAILED! Will fore close session."
+				print "self.PVIVADO.before:",self.PVIVADO.before
+				print "self.PVIVADO.after:",self.PVIVADO.after
+				return False
+			elif (ret_close_hw == 2):
+				print "WARNNING: [jtagutils.py] EOF Found!"
+				return False
+			elif (ret_close_hw == 3):
+				print "ERROR: [jtagutils.py] Time out!!"
+				return False
+			else:
+				print "WARNING: [jtagutils.py] Unable to determine hardware status. Will force close session."
+				return False
+
+		else:
+			print "INFO: [jtagutils.py] Vivado process already closed. Do nothing."
+			return True
+
+		#self.PVIVADO.interact()
+        	#print self.PVIVADO.before,self.PVIVADO.after
+	        self.PVIVADO.kill(1)				        
+		print ('Vivado TCL Shell is alive? :', self.PVIVADO.isalive())
+
+
+	#def list_jtag_targets(self):
+	
+	#	pVivado.sendline('list_jtag_targets')
+	#	pVivado.expect('LIST_HW_OK')
+	#	#pVivado.sendline('close_hardware_server')
+	#	return True
+
+
+
+
+
+
+
+
+
+#Poll process for new output until finished
+#while pVivado.poll() is None:
+#	line = pVivado.stdout.readline()
+#	print line
+
+#stdout_data =  pVivado.communicate(input='setup_hardware_server')[0]
+
+#while pVivado.poll() is None:
+#	line = pVivado.stdout.readline()
+#	print "line:",line
+
+#pVivado.stdout.close()
+#print pVivado.stdout.read()

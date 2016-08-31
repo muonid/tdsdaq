@@ -1,0 +1,201 @@
+
+[liang@atlas fpgaMgr]$ python fpgacaller.py 
+INFO: [jtagutils.py] new vivado process. Pid:  11885
+INFO: [jtagutils.py] jtagutils.tcl loaded to xtclsh.
+0
+1
+setup_hardware_server: pid  11885 is still alive...
+self.PVIVADO.before: 14.2 (64-bit)
+  **** SW Build 932637 on Wed Jun 11 13:08:52 MDT 2014
+  **** IP Build 924643 on Fri May 30 09:20:16 MDT 2014
+    ** Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
+
+setup_hardware_server
+Vivado% catch {source jtagutils.tcl -notrace}
+0
+Vivado% setup_hardware_server
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-2222] Launching hw_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+****** Xilinx hw_server v2014.2
+  **** Build date : Jun 11 2014-13:08:17
+    ** Copyright 1986-1999, 2001-2014 Xilinx, Inc. All Rights Reserved.
+
+INFO: hw_server application started
+INFO: Use Ctrl-C to exit hw_server application
+
+
+INFO: [Labtools 27-2286] Connecting to vcse_server host localhost port 60001
+INFO: [Labtools 27-109] Started Vivado Cse Server instance on port: 60001
+INFO: [Labtools 27-2286] Connecting to vcse_server host localhost port 60001
+INFO: [Labtools 27-147] vcse_server: TCF plugin connecting to hw_server...
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection established with hw_server.
+INFO: [Labtools 27-147] vcse_server: TCF plugin connecting to hw_server...
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection established with hw_server.
+INFO: [Labtools 27-147] vcse_server: TCF plugin connecting to hw_server...
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection established with hw_server.
+
+self.PVIVADO.after: CONNECT_HW_SERVER_OK
+INFO: [jtagutils.py] Connect to hardware server - SUCCEEDED!
+isConnected_hw_server: True
+0
+1
+2
+deploy_bitstream: pid  11885 is still alive...
+self.PVIVADO.after: DEPLOY_BITSTREAM_OK
+INFO: [jtagutils.py] Deploying bit stream for TDS-TEST-PROG-001 - SUCCEEDED!
+isDeployed_bitstream: True
+0
+1
+2
+eye_scan: pid  11885 is still alive...
+INFO: [jtagutils.py] Eye Scan - SUCCEEDED!
+isDone_eyescan: True
+INFO: [EYE-SCAN] Eye scan data found.
+0.168441
+0.140765
+0.0392073
+0.0324046
+0.0739873
+0.0653051
+0.0748527
+0.105784
+0.164223
+0.131912
+0.121905
+0.00295451
+0.000316673
+0.0122019
+0.0080909
+0.00467829
+0.0411569
+0.094209
+0.153695
+0.115314
+0.000593136
+5.96056e-09
+3.51673e-07
+2.10706e-06
+4.23199e-07
+0.00635542
+0.0654525
+0.177381
+0.1
+9.67339e-05
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.000174242
+0.0626697
+0.188915
+0.0815495
+1.33874e-05
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+1.40669e-06
+0.0579302
+0.206849
+0.0589726
+1.60339e-06
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+8.94083e-09
+0.0390268
+0.228333
+0.0397714
+2.116e-07
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.0148262
+0.241527
+0.028016
+1.78817e-08
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.00376544
+0.231272
+0.0389895
+1.16231e-07
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.0152888
+0.209602
+0.0584396
+1.20999e-06
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.038098
+0.192503
+0.0810682
+1.0279e-05
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+4.64923e-07
+0.0579322
+0.180409
+0.100004
+7.05551e-05
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.73316e-05
+0.0623364
+0.161806
+0.113273
+0.00046174
+5.96056e-09
+5.96056e-09
+1.37093e-07
+3.48692e-07
+0.00334723
+0.0649188
+0.136289
+0.121903
+0.00250631
+2.12553e-05
+0.0041734
+0.00360152
+0.00248685
+0.0322413
+0.085226
+0.155186
+0.131152
+0.0262275
+0.0271758
+0.0421046
+0.0447546
+0.0544673
+0.0977084
+0.157429
+eyehist
+EyeDiagram
+1.0
+INFO:ROOT.TCanvas.Print] pdf file /home/liang/work/tdsDAQ/fpgaMgr/test_long_sma_1.0m.pdf has been created
+0
+1
+2
+close_all: pid  11885 is still alive...
+self.PVIVADO.after: DISCONNECT_HW_SERVER_OK
+INFO: [jtagutils.py] Disconnect hardware server - SUCCEEDED!
+

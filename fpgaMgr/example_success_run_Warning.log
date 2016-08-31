@@ -1,0 +1,220 @@
+# NOTE: if the following error happened. It might be issue that the probe file 
+# can not be found to program the FPGA board.
+
+WARNING: [Labtools 27-147] vcse_server: Could not open target: jsn-DLC10-000013c0dac501
+WARNING: [Labtools 27-147] vcse_server: open device failed: vref missing
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection failed
+
+
+
+
+
+
+
+[liang@atlas fpgaMgr]$ python fpgacaller.py 
+Looking at info associated with board:  TDSV2-WIREBOND-TBD-01
++----JTAGDES: localhost/xilinx_tcf/Digilent/210203A0237EA
++----MAC Address: 91:92:93:94:95:00
++----PairedTDSID: UM-TDSV2-001
++----FPGAID: VIRTEX-7
+Looking at info associated with test program:  TDS-TESTPROG-001
++----BITFILE:  ./virtex7_ibert/example_ibert_7series_gtx_0.bit
+INFO: [jtagutils.py] new vivado process. Pid:  5428
+INFO: [jtagutils.py] jtagutils.tcl loaded to xtclsh.
+0
+1
+setup_hardware_server: pid  5428 is still alive...
+self.PVIVADO.before: 14.2 (64-bit)
+  **** SW Build 932637 on Wed Jun 11 13:08:52 MDT 2014
+  **** IP Build 924643 on Fri May 30 09:20:16 MDT 2014
+    ** Copyright 1986-2014 Xilinx, Inc. All Rights Reserved.
+
+setup_hardware_server
+Vivado% catch {source jtagutils.tcl -notrace}
+0
+Vivado% setup_hardware_server
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-2222] Launching hw_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+****** Xilinx hw_server v2014.2
+  **** Build date : Jun 11 2014-13:08:17
+    ** Copyright 1986-1999, 2001-2014 Xilinx, Inc. All Rights Reserved.
+
+INFO: hw_server application started
+INFO: Use Ctrl-C to exit hw_server application
+
+
+INFO: [Labtools 27-2286] Connecting to vcse_server host localhost port 60001
+INFO: [Labtools 27-109] Started Vivado Cse Server instance on port: 60001
+INFO: [Labtools 27-2286] Connecting to vcse_server host localhost port 60001
+INFO: [Labtools 27-147] vcse_server: TCF plugin connecting to hw_server...
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection established with hw_server.
+INFO: [Labtools 27-147] vcse_server: TCF plugin connecting to hw_server...
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection established with hw_server.
+INFO: [Labtools 27-147] vcse_server: TCF plugin connecting to hw_server...
+WARNING: [Labtools 27-147] vcse_server: Could not open target: jsn-DLC10-000013c0dac501
+WARNING: [Labtools 27-147] vcse_server: open device failed: vref missing
+INFO: [Labtools 27-147] vcse_server: TCF Plugin connection failed.
+
+self.PVIVADO.after: CONNECT_HW_SERVER_OK
+INFO: [jtagutils.py] Connect to hardware server - SUCCEEDED!
+isConnected_hw_server: True
+0
+1
+2
+deploy_bitstream: pid  5428 is still alive...
+self.PVIVADO.after: DEPLOY_BITSTREAM_OK
+INFO: [jtagutils.py] Deploying bit stream for TDS-TESTPROG-001 - SUCCEEDED!
+isDeployed_bitstream: True
+0
+1
+2
+eye_scan: pid  5428 is still alive...
+INFO: [jtagutils.py] Eye Scan from Board ( TDSV2-WIREBOND-TBD-01 ) - SUCCEEDED!
+isDone_eyescan: True
+INFO: [EYE-SCAN] Eye scan data found.
+0.169323
+0.14367
+0.038456
+0.0325695
+0.0748527
+0.0684482
+0.0739873
+0.107561
+0.16331
+0.131477
+0.12191
+0.00266286
+0.000559973
+0.0137929
+0.00930219
+0.00580227
+0.043835
+0.0953129
+0.152096
+0.114284
+0.00053335
+5.96056e-09
+8.31497e-07
+2.03553e-06
+4.91746e-07
+0.00559432
+0.0655728
+0.17838
+0.0984616
+8.01426e-05
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.000162836
+0.0626917
+0.188591
+0.0780675
+1.31669e-05
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+1.48418e-06
+0.0579335
+0.207016
+0.056869
+1.82393e-06
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.0387912
+0.228713
+0.0377512
+2.50343e-07
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.0159361
+0.241527
+0.0244237
+2.08619e-08
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.00403601
+0.230053
+0.0363587
+1.57955e-07
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.014993
+0.210255
+0.055639
+1.29642e-06
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+0.0383274
+0.191637
+0.078105
+1.03207e-05
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+4.2618e-07
+0.0574135
+0.180409
+0.0969735
+6.76672e-05
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.96056e-09
+5.06409e-05
+0.0623478
+0.161264
+0.112279
+0.000404663
+5.96056e-09
+5.96056e-09
+1.40073e-07
+1.69876e-07
+0.00296224
+0.0646156
+0.13597
+0.120753
+0.00200069
+2.03136e-05
+0.00394691
+0.00321281
+0.00222103
+0.0310675
+0.0851456
+0.154513
+0.129472
+0.0213202
+0.0258061
+0.0412897
+0.0433892
+0.0531112
+0.0962391
+0.154915
+eyehist
+EyeDiagram
+1.0
+0
+1
+2
+close_all: pid  5428 is still alive...
+self.PVIVADO.after: DISCONNECT_HW_SERVER_OK
+INFO: [jtagutils.py] Disconnect hardware server - SUCCEEDED!
